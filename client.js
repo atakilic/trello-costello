@@ -212,11 +212,13 @@ var getSettings = function(t) {
         var buttons = [{
           text: options.search !== '' ? 'Add cost field: ' + options.search : '(Enter a title to add cost field)',
           callback: function(t) {
-            costFields.push(options.search);
-            return t.set('board', 'shared', 'costFields', costFields)
-            .then(function() {
-              return getSettings(t);
-            });
+            if (options.search) {
+              costFields.push(options.search);
+              return t.set('board', 'shared', 'costFields', costFields)
+              .then(function() {
+                return getSettings(t);
+              });
+            }
           }
         }];
         if (costFields && Array.isArray(costFields) && costFields.length > 0) {
@@ -230,11 +232,13 @@ var getSettings = function(t) {
                     return [{
                       text: subopt.search !== '' ? 'Rename field to "' + subopt.search + '"': '(Enter a new name for this field.)',
                       callback: function(t) {
-                        costFields[idx] = subopt.search;
-                        return t.set('board', 'shared', 'costFields', costFields)
-                        .then(function() {
-                          return getSettings(t);             
-                        });
+                        if (subopt.search) {
+                          costFields[idx] = subopt.search;
+                          return t.set('board', 'shared', 'costFields', costFields)
+                          .then(function() {
+                            return getSettings(t);             
+                          });
+                        }
                       }
                     }, {
                       text: 'Delete ' + costField + ' field.',
